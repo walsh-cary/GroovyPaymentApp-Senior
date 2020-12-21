@@ -13,6 +13,8 @@ import com.imobile3.groovypayments.data.model.PaymentType;
 import com.imobile3.groovypayments.logging.LogHelper;
 import com.imobile3.groovypayments.manager.CartManager;
 import com.imobile3.groovypayments.network.WebServiceManager;
+import com.imobile3.groovypayments.network.domainobjects.PaymentResponseDto;
+import com.imobile3.groovypayments.network.domainobjects.PaymentResponseHelper;
 import com.imobile3.groovypayments.ui.BaseActivity;
 import com.imobile3.groovypayments.ui.adapter.PaymentTypeListAdapter;
 import com.imobile3.groovypayments.ui.dialog.ProgressDialog;
@@ -22,6 +24,7 @@ import com.stripe.android.ApiResultCallback;
 import com.stripe.android.PaymentConfiguration;
 import com.stripe.android.PaymentIntentResult;
 import com.stripe.android.Stripe;
+import com.stripe.android.model.ConfirmPaymentIntentParams;
 import com.stripe.android.model.PaymentMethodCreateParams;
 import com.stripe.android.view.CardInputWidget;
 
@@ -119,6 +122,9 @@ public class CheckoutActivity extends BaseActivity {
         Stripe stripe = new Stripe(context,
                 PaymentConfiguration.getInstance(context).getPublishableKey());
         stripe.onPaymentResult(requestCode, data, new PaymentResultCallback(this));
+        Intent intent = new Intent(this, CheckoutCompleteActivity.class);
+        startActivity(intent);
+        dismissProgressDialog();
     }
 
     /*
@@ -164,7 +170,8 @@ public class CheckoutActivity extends BaseActivity {
 
         @Override
         public void onSuccess(@NonNull PaymentIntentResult result) {
-            // TODO: Invoke CartManager.getInstance().addCreditPayment()
+            PaymentResponseDto creditResult = PaymentResponseHelper.transform(result.getIntent());
+            CartManager.getInstance().addCreditPayment(creditResult);
         }
 
         @Override
@@ -180,22 +187,42 @@ public class CheckoutActivity extends BaseActivity {
     }
 
     private void handlePayWithCreditClick() {
+        showProgressDialog();
         PaymentMethodCreateParams params = mCreditCardInputWidget.getPaymentMethodCreateParams();
+
+        // Will fail if cart total is zero
+        // Cart total can be manually changed for testing
         if (params != null) {
-            // TODO: Task #008 "Generate the Client Secret... On the Client!"
-            /*
-            1. Invoke WebServiceManager.getInstance().generateClientSecret()
+            WebServiceManager.getInstance().generateClientSecret(
+                    getApplicationContext(),
+                    CartManager.getInstance().getCart().getGrandTotal(),
+                    new WebServiceManager.ClientSecretCallback() {
+                        @Override
+                        public void onClientSecretError(@NonNull String message) {
+                            dismissProgressDialog();
 
-            2. Build the ConfirmPaymentIntentParams from the Credit Widget params using
-               the SDK static method:
-               ConfirmPaymentIntentParams.createWithPaymentMethodCreateParams()
+                            showAlertDialog(
+                                    "Client Secret Error",
+                                    "Error: " + message,
+                                    "OK",
+                                    null
+                            );
+                        }
 
-               Android SDK usage is documented here:
-               https://stripe.com/docs/payments/accept-a-payment#android
+                        @Override
+                        public void onClientSecretGenerated(@NonNull String clientSecret) {
+                            ConfirmPaymentIntentParams confirmParams = ConfirmPaymentIntentParams
+                                    .createWithPaymentMethodCreateParams(params, clientSecret);
 
-            3. In the onClientSecretGenerated() callback, construct a new Stripe instance,
-               then invoke stripe.confirmPayment()
-             */
+                            final Context context = getApplicationContext();
+                            Stripe stripe = new Stripe(
+                                    context,
+                                    PaymentConfiguration.getInstance(context).getPublishableKey()
+                            );
+                            stripe.confirmPayment(CheckoutActivity.this, confirmParams);
+                        }
+                    }
+            );
         }
     }
 
