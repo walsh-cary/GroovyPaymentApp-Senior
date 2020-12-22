@@ -45,7 +45,8 @@
                 android:padding="6dp"
                 android:scaleType="fitCenter"
                 android:src="@drawable/ic_person"
-                android:tint="@android:color/white" />
+                android:tint="@android:color/white"
+                android:contentDescription="@string/user_avatar_image" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -60,7 +61,6 @@
                     android:layout_weight="0.75"
                     android:gravity="end"
                     android:text="@string/user_profile_username"
-                    android:visibility="gone"
                     tools:visibility="visible" />
 
                 <TextView
@@ -87,7 +87,6 @@
                     android:layout_weight="0.75"
                     android:gravity="end"
                     android:text="@string/user_profile_email"
-                    android:visibility="gone"
                     tools:visibility="visible" />
 
                 <TextView
@@ -114,7 +113,6 @@
                     android:layout_weight="0.75"
                     android:gravity="end"
                     android:text="@string/user_profile_hours_week"
-                    android:visibility="gone"
                     tools:visibility="visible" />
 
                 <TextView

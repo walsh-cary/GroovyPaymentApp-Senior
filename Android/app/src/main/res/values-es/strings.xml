@@ -129,4 +129,5 @@
         <item>Usando Machine Learning&#8230;</item>
         <item>Contando frijoles&#8230;</item>
     </string-array>
+    <string name="user_avatar_image">Imagen de perfil</string>
 </resources>

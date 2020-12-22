@@ -52,7 +52,6 @@ public class LoginActivity extends BaseActivity {
             loginButton.setEnabled(loginFormState.isDataValid());
             if (loginFormState.getUsernameError() != null) {
                 usernameEditText.setError(getString(loginFormState.getUsernameError()));
-                saveProfileData("name","UserName",usernameEditText.getText().toString());
             }
             if (loginFormState.getPasswordError() != null) {
                 passwordEditText.setError(getString(loginFormState.getPasswordError()));
@@ -105,6 +104,7 @@ public class LoginActivity extends BaseActivity {
             try {
                 loginViewModel.login(EncryptDec.encryptAndEncode(usernameEditText.getText().toString()),
                         EncryptDec.encryptAndEncode(passwordEditText.getText().toString()));
+                saveProfileData("name","UserName",usernameEditText.getText().toString());
             } catch (Exception e) {
                 e.printStackTrace();
             }
