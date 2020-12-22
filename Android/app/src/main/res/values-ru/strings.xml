@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Groovy Mobile Payments</string>
+
+    <!-- Common -->
+    <string name="common_ok">Хорошо</string>
+    <string name = "common_cancel"> Отменить </string>
+    <string name = "common_back"> Назад </string>
+    <string name = "common_change"> Изменить </string>
+    <string name = "common_order_entry"> Ввод заказа </string>
+    <string name = "common_management"> Управление </string>
+    <string name = "common_time_tracking"> Отслеживание времени </string>
+    <string name = "common_under_construction"> В разработке </string>
+    <string name = "common_acknowledged"> Подтверждено </string>
+    <string name = "common_order_history"> История заказов </string>
+    <string name = "common_secret_functions"> Секретные функции </string>
+    <string name = "common_user_profile"> Профиль пользователя </string>
+    <string name = "common_lorem_ipsum_description"> Lorem ipsum dolor sit amet, Conctetur
+        adipiscing elit. Целочисленный коммодо, nisi a rutrum dapibus, urna elit cursus mi, ut
+        elementum lacus elit nec diam. Nullam laoreet dui id dui facilisis lacinia. Sed convallis
+        feugiat ex, interdum tincidunt sapien consquat ut. </string>
+    <string name = "reports"> Отчеты </string>
+    <!-- Login -->
+    <string name = "prompt_email"> Электронная почта </string>
+    <string name = "prompt_password"> Пароль </string>
+    <string name = "action_sign_in"> Войдите или зарегистрируйтесь </string>
+    <string name = "skip_login"> Пропустить вход </string>
+    <string name = "action_sign_in_short"> Войти </string>
+    <string name = "welcome"> "Добро пожаловать!" </string>
+    <string name = "invalid_username"> Недействительное имя пользователя </string>
+    <string name = "invalid_password"> Пароль должен содержать> 5 символов </string>
+    <string name = "login_failed"> "Ошибка входа" </string>
+
+    <!-- Main Dashboard -->
+    <string name = "order_entry_description"> Просмотрите инвентарь магазина или продавайте товары
+        клиент. </string>
+    <string name = "user_profile_description"> Просмотр или изменение текущих пользовательских настроек. </string>
+    <string name = "management_description"> Управляйте настройками торговой точки. </string>
+    <string name = "time_tracking_description"> Входите / выходите и просматривайте свои недавние действия. </string>
+    <string name = "order_history_description"> Взгляните на исторические заказы, выполненные на этом
+        Торговая точка. </string>
+    <string name = "secret_functions_description"> Суперсекретная область, в которой можно выполнять специальные
+        функции, такие как сброс демонстрационной базы данных. </string>
+    <string name = "placeholder_description"> Это временный заполнитель. </string>
+    <string name = "under_construction_alert_message"> Эта область приложения все еще
+        в разработке. Не стесняйтесь демонстрировать свои навыки и развивать их. </string>
+    <string name = "main_dashboard_subtitle"> Куда вы хотите пойти? </string>
+    <string name = "reports_description"> Просматривать диаграмму популярности товаров по дням
+        отчет. </string>
+
+    <!-- User Profile -->
+
+    <string name = "user_profile_subtitle_format"> Добро пожаловать,% 1 $ s. </string>
+    <string name = "user_profile_username"> Имя пользователя: </string>
+    <string name = "user_profile_email"> Электронная почта: </string>
+    <string name = "user_profile_hours_week"> Часы (неделя): </string>
+
+    <!-- Secret Functions -->
+
+    <string name = "secret_functions_subtitle"> Совершенно секретная область. </string>
+    <string name = "secret_functions_reset_database"> Сбросить базу данных </string>
+    <string name = "secret_functions_erase_cart"> Удалить корзину </string>
+    <string name = "secret_functions_alert_title"> Функция выполнена </string>
+    <string name = "secret_functions_alert_button"> Скопируйте это. </string>
+    <string name = "secret_functions_alert_reset_database"> Демонстрационная база данных успешно сброшена
+        (восстановлены все оригинальные демо-данные). Это сообщение самоуничтожится. </string>
+    <string name = "secret_functions_alert_erase_cart"> Ваш текущий экземпляр корзины был удален.
+        Как будто вашей корзины никогда не существовало &#8230; </string>
+
+    <!-- Order Entry -->
+    <string name = "order_entry_subtitle"> Добавить продукты в заказ. </string>
+    <string name = "order_entry_subtitle_checkout"> Щелкните значок в правом верхнем углу, чтобы оформить заказ. </string>
+
+    <!-- Order History -->
+    <string name = "order_history_subtitle"> Последние заказы, перечисленные ниже. </string>
+    <string name = "order_history_alert_title"> Не реализовано </string>
+    <string name = "order_history_alert_button"> Конечно. </string>
+    <string name = "order_history_alert_message"> Функциональность истории заказов не реализована.
+        Пожалуйста, прекратите нажимать на элементы списка. </string>
+    <string name = "order_history_alert_warning_title"> Остановить </string>
+    <string name = "order_history_alert_warning_button"> Неважно. </string>
+    <string name = "order_history_alert_warning_message"> Вас предупредили, что нельзя щелкать элементы списка.
+        Администраторы уведомлены. </string>
+
+    <!--Daily Report-->
+    <string name = "daily_report_subtitle"> Ежедневный отчет </string>
+    <string name = "daily_report_product_popularity"> Популярность продукта </string>
+    <string name = "daily_report_progress_message"> График загрузки </string>
+
+    <!-- Checkout -->
+    <string name = "checkout_subtitle"> Как вы будете платить? </string>
+    <string name = "checkout_with_cash"> Наличными </string>
+    <string name = "checkout_with_credit"> С кредитом </string>
+    <string name = "checkout_pay_cash"> Оплата (наличными) </string>
+    <string name = "checkout_pay_credit"> Оплатить (кредит) </string>
+    <string name = "checkout_complete_title_message"> Поздравляем! Ваш платеж был
+        одобрено! </string>
+    <string name = "checkout_complete_subtitle"> Заказ завершен! </string>
+    <string name = "checkout_complete_customer_message"> Спасибо за покупку у нас - нажмите
+        кнопку ниже, чтобы вернуться к экрану ввода заказа. </string>
+    <string name = "checkout_complete_groovy"> Отлично! </string>
+
+
+    <!-- Payment Types -->
+    <string name = "credit"> Кредит </string>
+    <string name = "cash"> Наличные </string>
+
+    <!-- Keypad -->
+    <string name="keypad_1">1</string>
+    <string name="keypad_2">2</string>
+    <string name="keypad_3">3</string>
+    <string name="keypad_4">4</string>
+    <string name="keypad_5">5</string>
+    <string name="keypad_6">6</string>
+    <string name="keypad_7">7</string>
+    <string name="keypad_8">8</string>
+    <string name="keypad_9">9</string>
+    <string name="keypad_00">00</string>
+    <string name="keypad_0">0</string>
+    <string name="user_avatar_image">Изображение профиля</string>
+
+</resources>
