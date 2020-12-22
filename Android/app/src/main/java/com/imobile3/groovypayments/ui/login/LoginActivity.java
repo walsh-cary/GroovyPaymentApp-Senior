@@ -2,6 +2,7 @@ package com.imobile3.groovypayments.ui.login;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -15,9 +16,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.imobile3.groovypayments.R;
+import com.imobile3.groovypayments.data.entities.UserEntity;
 import com.imobile3.groovypayments.ui.BaseActivity;
 import com.imobile3.groovypayments.ui.main.MainDashboardActivity;
+import com.imobile3.groovypayments.utils.EncryptDec;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.lifecycle.Observer;
@@ -26,6 +30,9 @@ import androidx.lifecycle.ViewModelProviders;
 public class LoginActivity extends BaseActivity {
 
     private LoginViewModel loginViewModel;
+
+    @NonNull
+    private final UserEntity User = new UserEntity();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -38,37 +45,32 @@ public class LoginActivity extends BaseActivity {
         final Button btnSkipLogin = findViewById(R.id.btn_skip_login);
         final ProgressBar loadingProgressBar = findViewById(R.id.loading);
 
-        loginViewModel.getLoginFormState().observe(this, new Observer<LoginFormState>() {
-            @Override
-            public void onChanged(@Nullable LoginFormState loginFormState) {
-                if (loginFormState == null) {
-                    return;
-                }
-                loginButton.setEnabled(loginFormState.isDataValid());
-                if (loginFormState.getUsernameError() != null) {
-                    usernameEditText.setError(getString(loginFormState.getUsernameError()));
-                }
-                if (loginFormState.getPasswordError() != null) {
-                    passwordEditText.setError(getString(loginFormState.getPasswordError()));
-                }
+        loginViewModel.getLoginFormState().observe(this, loginFormState -> {
+            if (loginFormState == null) {
+                return;
+            }
+            loginButton.setEnabled(loginFormState.isDataValid());
+            if (loginFormState.getUsernameError() != null) {
+                usernameEditText.setError(getString(loginFormState.getUsernameError()));
+                saveProfileData("name","UserName",usernameEditText.getText().toString());
+            }
+            if (loginFormState.getPasswordError() != null) {
+                passwordEditText.setError(getString(loginFormState.getPasswordError()));
             }
         });
 
-        loginViewModel.getLoginResult().observe(this, new Observer<LoginResult>() {
-            @Override
-            public void onChanged(@Nullable LoginResult loginResult) {
-                if (loginResult == null) {
-                    return;
-                }
-                loadingProgressBar.setVisibility(View.GONE);
-                if (loginResult.getError() != null) {
-                    showLoginFailed(loginResult.getError());
-                }
-                if (loginResult.getSuccess() != null) {
-                    updateUiWithUser(loginResult.getSuccess());
-                }
-                handleLoginSuccess();
+        loginViewModel.getLoginResult().observe(this, loginResult -> {
+            if (loginResult == null) {
+                return;
             }
+            loadingProgressBar.setVisibility(View.GONE);
+            if (loginResult.getError() != null) {
+                showLoginFailed(loginResult.getError());
+            }
+            if (loginResult.getSuccess() != null) {
+                updateUiWithUser(loginResult.getSuccess());
+            }
+            handleLoginSuccess();
         });
 
         TextWatcher afterTextChangedListener = new TextWatcher() {
@@ -90,24 +92,21 @@ public class LoginActivity extends BaseActivity {
         };
         usernameEditText.addTextChangedListener(afterTextChangedListener);
         passwordEditText.addTextChangedListener(afterTextChangedListener);
-        passwordEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    loginViewModel.login(usernameEditText.getText().toString(),
-                            passwordEditText.getText().toString());
-                }
-                return false;
-            }
-        });
-
-        loginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                loadingProgressBar.setVisibility(View.VISIBLE);
+        passwordEditText.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
                 loginViewModel.login(usernameEditText.getText().toString(),
                         passwordEditText.getText().toString());
+            }
+            return false;
+        });
+
+        loginButton.setOnClickListener(v -> {
+            loadingProgressBar.setVisibility(View.VISIBLE);
+            try {
+                loginViewModel.login(EncryptDec.encryptAndEncode(usernameEditText.getText().toString()),
+                        EncryptDec.encryptAndEncode(passwordEditText.getText().toString()));
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         });
 
@@ -136,5 +135,13 @@ public class LoginActivity extends BaseActivity {
         // Complete and destroy login activity once successful
         finish();
         startActivity(new Intent(LoginActivity.this, MainDashboardActivity.class));
+    }
+
+    //For displaying user profile data
+    private  void saveProfileData( String key,String Name, String data){
+        SharedPreferences pref = getApplicationContext().getSharedPreferences(Name, 0);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putString(key, data);
+        editor.apply();
     }
 }
